@@ -12,6 +12,7 @@ Plugin.create :sub_parts_client do
     def initialize(*args)
       super
       @margin = 2
+      @hasLink = false
       if message and not helper.visible?
         sid = helper.ssc(:expose_event, helper){
           helper.on_modify
@@ -25,7 +26,8 @@ Plugin.create :sub_parts_client do
           layout = main_message(context)
           context.translate(width - (layout.size[0] / Pango::SCALE) - @margin*2, 0)
           context.set_source_rgb(*(UserConfig[:mumble_basic_color] || [0,0,0]).map{ |c| c.to_f / 65536 })
-          context.show_pango_layout(layout) } end end
+          context.show_pango_layout(layout)
+          add_link(layout.size[0] / Pango::SCALE) } end end
 
     def height
       @height ||= main_message.size[1] / Pango::SCALE end
@@ -44,6 +46,22 @@ Plugin.create :sub_parts_client do
 
     def message
       helper.message end
+
+    def add_link(x_size)
+      return if @hasLink
+      @hasLink = true
+      helper.ssc(:click) do |this, e, x, y|
+        ofsty = helper.mainpart_height
+        helper.subparts.each do |part|
+          break if part == self
+          ofsty += part.height
+        end
+        if ( ofsty <= y and y <= (ofsty + height) ) and
+           ( (width - x_size - @margin * 2) <= x ) then
+          Gtk::openurl(message[:source_url]) if e.button == 1
+        end
+      end
+    end
 
   end
 end

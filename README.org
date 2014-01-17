@@ -10,6 +10,10 @@ mikutter 0.2.2 以上をインストールしてください。
 : $ mkdir -p ~/.mikutter/plugin
 : $ cd ~/.mikutter/plugin
 : $ git clone git://github.com/toshia/mikutter-sub-parts-client.git sub-parts-client
+: $ cd /tmp
+: $ git clone https://gist.github.com/8484629.git
+: $ cd ${MIKUTTER_DIR}/
+: $ patch -p1 < /tmp/8484629/patch.diff       # root権限がいるかも
 
 * 使いかた
 起動したら各ツイートの下に「via (Twitterクライアント名)」と表示されます。
