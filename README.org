@@ -15,7 +15,7 @@ mikutter 3.5 系をインストールしてください．
 : cnv[:source] = $2 if cnv[:source].is_a?(String) and cnv[:source].match(/^<a\s+href="(.*?)".*>(.*?)<\/a>$/)
 : cnv[:source_url] = $1 || 'https://twitter.com'
 
-次に，`git clone`なりをして，`~/.mikutter/plugin`にプラグインを導入してください．
+次に，=git clone=なりをして，=~/.mikutter/plugin=にプラグインを導入してください．
 
 * 使いかた
 起動したら各ツイートの下に「via (Twitterクライアント名)」と表示されます．
