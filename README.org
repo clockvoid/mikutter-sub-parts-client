@@ -9,13 +9,15 @@ fork元プラグインは古いバージョンのmikutterでしかうまく動�
 mikutter 3.5 系をインストールしてください．
 次に，以下のファイルを次の通り編集してください．
 
-: ${MIKUTTER_DIR}/mikutter/core/message.rb 52行目辺りに，次のコードを追加
-: field.string :source_url
-: ${MIKUTTER_DIR}/mikutter/core/lib/mikutwitter/api_call_support.rb 110行目を消して，次のコードを追加
-: cnv[:source] = $2 if cnv[:source].is_a?(String) and cnv[:source].match(/^<a\s+href="(.*?)".*>(.*?)<\/a>$/)
-: cnv[:source_url] = $1 || 'https://twitter.com'
+#+BEGIN_SRC
+${MIKUTTER_DIR}/mikutter/core/message.rb 52行目辺りに，次のコードを追加
+field.string :source_url
+${MIKUTTER_DIR}/mikutter/core/lib/mikutwitter/api_call_support.rb 110行目を消して，次のコードを追加
+cnv[:source] = $2 if cnv[:source].is_a?(String) and cnv[:source].match(/^<a\s+href="(.*?)".*>(.*?)<\/a>$/)
+cnv[:source_url] = $1 || 'https://twitter.com'
+#+END_SRC
 
-次に，=git clone=なりをして，=~/.mikutter/plugin=にプラグインを導入してください．
+次に，git cloneなりをして，~/.mikutter/pluginにプラグインを導入してください．
 
 * 使いかた
 起動したら各ツイートの下に「via (Twitterクライアント名)」と表示されます．
