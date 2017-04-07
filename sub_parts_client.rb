@@ -39,7 +39,7 @@ Plugin.create :sub_parts_client do
       layout.font_description = Pango::FontDescription.new(UserConfig[:mumble_basic_font])
       layout.alignment = Pango::ALIGN_RIGHT
       if(message[:source])
-        layout.text = (message[:system] ? "by" : "via") + ' ' + message[:source]
+		  layout.text = (message.system?() ? "by system" : ("via " + message[:source]))
       else
         layout.text = '' end
       layout end
@@ -48,6 +48,7 @@ Plugin.create :sub_parts_client do
       helper.message end
 
     def add_link(x_size)
+      return if message[:source_url].nil?
       return if @hasLink
       @hasLink = true
       helper.ssc(:click) do |this, e, x, y|

@@ -1,23 +1,27 @@
 sub parts client
 
 * これなん
-mikutterで、各ツイートにクライアント名を表示する奴です。via mikutterとか、投稿に使ったクライアントが分かります
+mikutterで，各ツイートにクライアント名を表示する奴です．via mikutterとか，投稿に使ったクライアントが分かります
+
+fork元プラグインは古いバージョンのmikutterでしかうまく動かなかったので，この度，forkして色々改修させていただきました．（そんな昔のリポジトリにissue投げても冷めるだけだと思ったので）
 
 * インストール方法
-mikutter 0.2.2 以上をインストールしてください。
-次に、以下のコマンドをターミナルで実行し、mikutterを再起動してください。
+mikutter 3.5 系をインストールしてください．
+次に，以下のファイルを次の通り編集してください．
 
-: $ mkdir -p ~/.mikutter/plugin
-: $ cd ~/.mikutter/plugin
-: $ git clone git://github.com/toshia/mikutter-sub-parts-client.git sub-parts-client
-: $ cd /tmp
-: $ git clone https://gist.github.com/8484629.git
-: $ cd ${MIKUTTER_DIR}/
-: $ patch -p1 < /tmp/8484629/patch.diff       # root権限がいるかも
+: ${MIKUTTER_DIR}/mikutter/core/message.rb 52行目辺りに，次のコードを追加
+: field.string :source_url
+: ${MIKUTTER_DIR}/mikutter/core/lib/mikutwitter/api_call_support.rb 110行目を消して，次のコードを追加
+: cnv[:source] = $2 if cnv[:source].is_a?(String) and cnv[:source].match(/^<a\s+href="(.*?)".*>(.*?)<\/a>$/)
+: cnv[:source_url] = $1 || 'https://twitter.com'
+
+次に，`git clone`なりをして，`~/.mikutter/plugin`にプラグインを導入してください．
 
 * 使いかた
-起動したら各ツイートの下に「via (Twitterクライアント名)」と表示されます。
-また、システムメッセージの場合は、「by (プラグイン名)」になります。
+起動したら各ツイートの下に「via (Twitterクライアント名)」と表示されます．
+また，システムメッセージの場合は，「by system」（fork者注:messageの発行元プラグインの名前を現在のmikutterで取ってくる方法がわかりませんので，最大限手を抜かせていただいて，このような対処をしております．）になります．
+
+表示されたTwitterクライアント名をクリックすると，ブラウザでそのクライアントがTwitterに登録しているURLを開きます．
 
 * カスタマイズ
 なんか魔改造したらぜひ
